@@ -47,3 +47,13 @@ exports.userLogin = async (req, res, next) => {
     userId: user._id
   })
 }
+exports.getUsers = async (req, res, next) => {
+  const val = req.query.search
+  const users = await User.find({"userName":{$regex: val}})
+  .select('userName')
+  console.log(users)
+  res.status(200).json({
+    users
+  })
+  
+}

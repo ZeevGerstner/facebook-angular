@@ -16,6 +16,6 @@ import { postPreviewComponent } from './post-preview/post-preview.component';
     ReactiveFormsModule,
     RouterModule,
   ],
-  exports: []
+  exports: [ReactiveFormsModule]
 })
 export class PostsModule {}
