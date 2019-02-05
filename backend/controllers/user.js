@@ -6,6 +6,7 @@ exports.createUser = async (req, res, next) => {
   const hash = await bcrypt.hash(req.body.password, 10)
   const user = new User({
     email: req.body.email,
+    userName: req.body.userName,
     password: hash
   })
   try {

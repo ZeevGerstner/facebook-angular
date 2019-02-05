@@ -3,5 +3,6 @@ export interface Post {
   title: string
   content: string
   imgPath: string
-  creator: string
+  creator:  { _id: string; userName: string }
+  createdAt?: Date
 }

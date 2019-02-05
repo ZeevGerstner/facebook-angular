@@ -26,13 +26,15 @@ export class PostsService {
         map(postData => ({
           posts: postData.posts.map(post => ({
             ...post,
-            id: post._id
+            id: post._id,
           })),
           maxPosts: postData.maxPosts
         }))
       )
       .subscribe(postsData => {
         this.posts = postsData.posts
+        console.log(this.posts);
+
         this.postsUpdated.next({
           posts: [...this.posts],
           postCount: postsData.maxPosts
@@ -84,8 +86,7 @@ export class PostsService {
         title,
         content,
         imgPath: img,
-        creator: null
-
+        creator: null,
       }
     }
     this.http

@@ -4,6 +4,8 @@ exports.getPosts = async (req, res, next) => {
   const pageSize = +req.query.pageSize
   const page = +req.query.page
   const postQuery = Post.find()
+    .populate('creator', 'userName')
+
   if (pageSize && page) {
     postQuery.skip(pageSize * (page - 1)).limit(pageSize)
   }
@@ -27,7 +29,8 @@ exports.createPost = async (req, res, next) => {
     title: req.body.title,
     content: req.body.content,
     imgPath: `${url}/imgs/${req.file.filename}`,
-    creator: req.userData.userId
+    creator: req.userData.userId,
+    createdAt: Date.now()
   })
   try {
     const newPost = await post.save()

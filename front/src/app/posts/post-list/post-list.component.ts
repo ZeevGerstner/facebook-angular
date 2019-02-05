@@ -15,7 +15,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   posts: Post[] = []
   isLoading = false
   totalPosts = 0
-  postsPerPage = 2
+  postsPerPage = 5
   currPage = 1
   pageSizeOptions = [1, 2, 5, 10]
   userIsAuthenticated = false
@@ -58,10 +58,10 @@ export class PostListComponent implements OnInit, OnDestroy {
   onDelete(postId: string) {
     this.isLoading = true
     this.postsService.deletePost(postId).subscribe(
-      (res) => {
+      res => {
         this.postsService.getPosts(this.postsPerPage, this.currPage)
       },
-      (err) => (this.isLoading = false)
+      err => (this.isLoading = false)
     )
   }
 

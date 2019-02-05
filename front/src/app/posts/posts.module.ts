@@ -5,14 +5,16 @@ import { ReactiveFormsModule } from '@angular/forms'
 import { AngularMaterialModule } from '../modules/angular-material.module'
 import { CommonModule } from '@angular/common'
 import { RouterModule } from '@angular/router'
+import {TimeAgoPipe} from 'time-ago-pipe'
 
 @NgModule({
-  declarations: [PostCreateComponent, PostListComponent],
+  declarations: [PostCreateComponent, PostListComponent, TimeAgoPipe],
   imports: [
     CommonModule,
     AngularMaterialModule,
     ReactiveFormsModule,
-    RouterModule
+    RouterModule,
+
   ],
   exports: []
 })

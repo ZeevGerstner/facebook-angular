@@ -32,8 +32,8 @@ export class AuthService {
     return this.authStatusListener.asObservable()
   }
 
-  createUser(email: string, password: string) {
-    const authData: AuthData = { email, password }
+  createUser(email: string, password: string, userName: string) {
+    const authData: AuthData = { email, password, userName }
     this.http
       .post(`${this.BASE_URL}signup`, authData)
       .subscribe(

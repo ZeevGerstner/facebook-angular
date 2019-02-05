@@ -16,7 +16,7 @@ import { PostsModule } from './posts/posts.module';
   declarations: [
     AppComponent,
     HeaderComponent,
-    ErrorComponent
+    ErrorComponent,
   ],
   imports: [
     BrowserModule,
