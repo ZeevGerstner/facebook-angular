@@ -46,8 +46,6 @@ exports.userLogin = async (req, res, next) => {
     expiresIn: 3600,
     userId: user._id
   })
-<<<<<<< HEAD
-=======
 }
 exports.getUsers = async (req, res, next) => {
   const val = req.query.search
@@ -58,5 +56,4 @@ exports.getUsers = async (req, res, next) => {
     users
   })
   
->>>>>>> 9df8064c16ead24ced519afbbee966c06a7cd8a7
 }
