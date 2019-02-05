@@ -5,14 +5,15 @@ import { ReactiveFormsModule } from '@angular/forms'
 import { AngularMaterialModule } from '../modules/angular-material.module'
 import { CommonModule } from '@angular/common'
 import { RouterModule } from '@angular/router'
+import { postPreviewComponent } from './post-preview/post-preview.component'
 
 @NgModule({
-  declarations: [PostCreateComponent, PostListComponent],
+  declarations: [PostCreateComponent, PostListComponent, postPreviewComponent],
   imports: [
     CommonModule,
     AngularMaterialModule,
     ReactiveFormsModule,
-    RouterModule
+    RouterModule,
   ],
   exports: []
 })

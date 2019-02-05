@@ -14,7 +14,6 @@ import { mimeType } from './mime-type.validator'
   styleUrls: ['./post-create.component.scss']
 })
 export class PostCreateComponent implements OnInit, OnDestroy {
-  postTitle = ''
   postContent = ''
   post: Post
   isLoading = false
@@ -45,13 +44,11 @@ export class PostCreateComponent implements OnInit, OnDestroy {
           this.isLoading = false
           this.post = {
             id: postData.id,
-            title: postData.title,
             content: postData.content,
             imgPath: postData.imgPath,
             creator: postData.creator
           }
           this.form.setValue({
-            title: this.post.title,
             content: this.post.content,
             img: this.post.imgPath
           })
@@ -77,14 +74,12 @@ export class PostCreateComponent implements OnInit, OnDestroy {
     this.isLoading = true
     if (this.mode === 'create') {
       this.postsService.addPosts(
-        this.form.value.title,
         this.form.value.content,
         this.form.value.img
       )
     } else {
       this.postsService.updatedPost(
         this.postId,
-        this.form.value.title,
         this.form.value.content,
         this.form.value.img
       )
@@ -94,9 +89,6 @@ export class PostCreateComponent implements OnInit, OnDestroy {
 
   setForm() {
     this.form = new FormGroup({
-      title: new FormControl(null, {
-        validators: [Validators.required, Validators.minLength(3)]
-      }),
       content: new FormControl(null, {
         validators: [Validators.required]
       }),
