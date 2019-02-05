@@ -63,6 +63,7 @@ export class PostCreateComponent implements OnInit, OnDestroy {
 
   onImgPicked(event: Event) {
     const file = (event.target as HTMLInputElement).files[0]
+    console.log(file)
     this.form.patchValue({ img: file })
     this.form.get('img').updateValueAndValidity()
     const reader = new FileReader()

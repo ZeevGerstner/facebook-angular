@@ -28,6 +28,6 @@ import { Cloudinary } from 'cloudinary-core'
       cloud_name: 'dwjawpmxz'
     } as CloudinaryConfiguration)
   ],
-  exports: []
+  exports: [ReactiveFormsModule]
 })
 export class PostsModule {}
