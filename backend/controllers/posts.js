@@ -26,7 +26,6 @@ exports.getPosts = async (req, res, next) => {
 exports.createPost = async (req, res, next) => {
   const url = `${req.protocol}://${req.get('host')}`
   const post = new Post({
-    title: req.body.title,
     content: req.body.content,
     imgPath: `${url}/imgs/${req.file.filename}`,
     creator: req.userData.userId,

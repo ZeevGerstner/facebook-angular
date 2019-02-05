@@ -49,18 +49,16 @@ export class PostsService {
   getPost(id: string) {
     return this.http.get<{
       _id: string
-      title: string
       content: string
       imgPath: string,
       creator: string
     }>(`${this.BASE_URL}${id}`)
   }
 
-  addPosts(title: string, content: string, img: File) {
+  addPosts(content: string, img: File) {
     const postData = new FormData()
-    postData.append('title', title)
     postData.append('content', content)
-    postData.append('img', img, title)
+    postData.append('img', img)
 
     this.http
       .post<{ message: string; post: Post }>(
@@ -72,18 +70,16 @@ export class PostsService {
       })
   }
 
-  updatedPost(id: string, title: string, content: string, img: File | string) {
+  updatedPost(id: string, content: string, img: File | string) {
     let postData: Post | FormData
     if (typeof img === 'object') {
       postData = new FormData()
       postData.append('id', id)
-      postData.append('title', title)
       postData.append('content', content)
-      postData.append('img', img, title)
+      postData.append('img', img)
     } else {
       postData = {
         id,
-        title,
         content,
         imgPath: img,
         creator: null,
