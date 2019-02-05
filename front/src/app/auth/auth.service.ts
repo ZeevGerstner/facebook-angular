@@ -42,6 +42,12 @@ export class AuthService {
       )
   }
 
+  getUser() {
+    console.log('service',this.BASE_URL);
+    this.http.get(`${this.BASE_URL}`)
+
+  }
+
   autoAuthUser() {
     const authInfo = this.getAuthData()
     if (!authInfo) return

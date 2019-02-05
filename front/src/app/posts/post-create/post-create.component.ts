@@ -74,10 +74,7 @@ export class PostCreateComponent implements OnInit, OnDestroy {
     if (this.form.invalid) return
     this.isLoading = true
     if (this.mode === 'create') {
-      this.postsService.addPosts(
-        this.form.value.content,
-        this.form.value.img
-      )
+      this.postsService.addPosts(this.form.value.content, this.form.value.img)
     } else {
       this.postsService.updatedPost(
         this.postId,

@@ -77,6 +77,8 @@ export class PostsService {
       postData.append('id', id)
       postData.append('content', content)
       postData.append('img', img)
+      console.log(img);
+
     } else {
       postData = {
         id,
