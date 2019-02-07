@@ -61,9 +61,9 @@ export class PostCreateComponent implements OnInit, OnDestroy {
             creator: postData.creator,
             createdAt: postData.createdAt
           }
+          this.imgPath = this.post.imgPath
           this.form.setValue({
             content: this.post.content,
-            img: this.post.imgPath
           })
         })
       } else {

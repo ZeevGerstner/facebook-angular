@@ -103,7 +103,7 @@ export class AuthService {
     clearTimeout(this.tokenTimer)
   }
 
-  getUserById(userId){
+  getUserById(userId: string) {
     return this.http.get<any>(`${this.BASE_URL}?userId=${userId}`)
   }
 

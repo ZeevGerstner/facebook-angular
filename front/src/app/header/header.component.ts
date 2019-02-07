@@ -1,9 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core'
-import { Subscription } from 'rxjs'
-import { AuthService } from '../auth/auth.service'
 import { FormGroup, FormControl } from '@angular/forms'
+import { Subscription } from 'rxjs'
+import {
+  debounceTime,
+  distinctUntilChanged,
+  switchMap,
+} from 'rxjs/operators'
+
+import { AuthService } from '../auth/auth.service'
 import { SearchService } from './services/search.service'
-import { debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
@@ -12,15 +17,17 @@ import { debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operato
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   userIsAuthenticated = false
-  private authListenerSub: Subscription
   usersSearch = []
+  searchForm = new FormGroup({
+    searchValue: new FormControl('')
+  })
+  private authListenerSub: Subscription
+
   constructor(
     private authService: AuthService,
     private searchService: SearchService
-  ) { }
-  searchForm = new FormGroup({
-    searchValue: new FormControl('')
-  });
+  ) {}
+
   ngOnInit() {
     this.userIsAuthenticated = this.authService.getIsAuth()
     this.authListenerSub = this.authService
@@ -33,17 +40,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .pipe(
         debounceTime(400),
         distinctUntilChanged(),
-        tap(t => console.log('term is ' + t)),
         switchMap(term => this.searchService.onSearchUsers(term))
-      ).subscribe(res => {
+      )
+      .subscribe(res => {
         this.usersSearch = res.users
-        console.log(this.usersSearch)
       })
   }
 
   onLogout() {
     this.authService.logout()
   }
+
   ngOnDestroy() {
     this.authListenerSub.unsubscribe()
   }
