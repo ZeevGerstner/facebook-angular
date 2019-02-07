@@ -1,29 +1,21 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core'
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Input,
+  Output,
+  EventEmitter
+} from '@angular/core'
 import { Post } from '../post.model'
 
-
 @Component({
-    selector: 'app-post-preview',
-    templateUrl: './post-preview.component.html',
-    styleUrls: ['./post-preview.component.scss']
+  selector: 'app-post-preview',
+  templateUrl: './post-preview.component.html',
+  styleUrls: ['./post-preview.component.scss']
 })
-
-export class postPreviewComponent implements OnInit, OnDestroy {
-
-
-    @Input() post: Post
-    @Input() userIsAuthenticated: boolean
-    @Input() userId: string
-
-    constructor(
-
-    ) { }
-
-    ngOnInit() {
-
-
-    }
-    ngOnDestroy() {
-    }
-
+export class PostPreviewComponent implements OnInit, OnDestroy {
+  @Input() post: Post
+  @Input() userIsAuthenticated: boolean
+  @Input() userId: string
+  @Output() onDelete = new EventEmitter<string>()
 }

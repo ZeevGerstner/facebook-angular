@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core'
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Output,
+  EventEmitter
+} from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
 import { FormGroup, FormControl, Validators } from '@angular/forms'
 import { Subscription } from 'rxjs'
@@ -6,7 +12,10 @@ import { Subscription } from 'rxjs'
 import { PostsService } from '../services/posts.service'
 import { AuthService } from 'src/app/auth/auth.service'
 import { Post } from '../post.model'
-import { mimeType } from './mime-type.validator'
+
+import { environment } from '../../../environments/environment'
+import '../../vendor/cloudinary'
+declare const cloudinary: any
 
 @Component({
   selector: 'app-post-create',
@@ -14,12 +23,15 @@ import { mimeType } from './mime-type.validator'
   styleUrls: ['./post-create.component.scss']
 })
 export class PostCreateComponent implements OnInit, OnDestroy {
+  @Output() onCreatePost = new EventEmitter<Post>()
+
   postContent = ''
   post: Post
   isLoading = false
   form: FormGroup
   imgPreview: string
-
+  myWidget: any
+  imgPath: string
   private mode = 'create'
   private postId: string
   private authStatusSub: Subscription
@@ -36,8 +48,8 @@ export class PostCreateComponent implements OnInit, OnDestroy {
       .subscribe(authStatus => (this.isLoading = false))
     this.setForm()
     this.route.paramMap.subscribe(paramMap => {
+      this.mode = 'edit'
       if (paramMap.has('postId')) {
-        this.mode = 'edit'
         this.postId = paramMap.get('postId')
         this.isLoading = true
         this.postsService.getPost(this.postId).subscribe((postData: any) => {
@@ -61,28 +73,25 @@ export class PostCreateComponent implements OnInit, OnDestroy {
     })
   }
 
-  onImgPicked(event: Event) {
-    const file = (event.target as HTMLInputElement).files[0]
-    console.log(file)
-    this.form.patchValue({ img: file })
-    this.form.get('img').updateValueAndValidity()
-    const reader = new FileReader()
-    reader.onload = () => ((this.imgPreview as any) = reader.result)
-    reader.readAsDataURL(file)
-  }
-
   onSavePost() {
     if (this.form.invalid) return
     this.isLoading = true
     if (this.mode === 'create') {
-      this.postsService.addPosts(this.form.value.content, this.form.value.img)
+      this.postsService.addPosts(this.form.value.content, this.imgPath)
+      // .subscribe(res => (this.isLoading = false))
     } else {
       this.postsService.updatedPost(
         this.postId,
         this.form.value.content,
-        this.form.value.img
+        this.imgPath
       )
     }
+    this.form.reset()
+  }
+
+  onCancelPost(ev) {
+    ev.preventDefault()
+    this.imgPath = ''
     this.form.reset()
   }
 
@@ -90,12 +99,24 @@ export class PostCreateComponent implements OnInit, OnDestroy {
     this.form = new FormGroup({
       content: new FormControl(null, {
         validators: [Validators.required]
-      }),
-      img: new FormControl(null, {
-        validators: [Validators.required],
-        asyncValidators: [mimeType]
       })
     })
+  }
+
+  setUploadWidget() {
+    this.myWidget = cloudinary.createUploadWidget(
+      {
+        cloudName: environment.cloudinary_cloud_name,
+        apiKey: environment.cloudinary_api_key,
+        uploadPreset: 'myPreset',
+        clientAllowedFormats: ['png', 'gif', 'jpeg', 'jpg']
+      },
+      (error, result) => {
+        console.log(result)
+        if (result && result.event === 'success') this.imgPath = result.info.url
+      }
+    )
+    this.myWidget.open()
   }
 
   ngOnDestroy() {

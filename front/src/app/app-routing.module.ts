@@ -2,13 +2,14 @@ import { NgModule } from '@angular/core'
 import { Routes, RouterModule } from '@angular/router'
 import { AuthGuard } from './auth/auth.guard'
 
-import { PostListComponent } from './posts/post-list/post-list.component'
+// import { PostListComponent } from './posts/post-list/post-list.component'
 import { PostCreateComponent } from './posts/post-create/post-create.component'
+import { MainFeedComponent } from './posts/feed/main.feed.component'
 
 const routes: Routes = [
   {
     path: '',
-    component: PostListComponent
+    component: MainFeedComponent
   },
   {
     path: 'create',

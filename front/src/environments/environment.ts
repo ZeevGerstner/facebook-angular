@@ -4,8 +4,10 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:3000/api'
-};
+  apiUrl: 'http://localhost:3000/api',
+  cloudinary_cloud_name: 'dwjawpmxz',
+  cloudinary_api_key: '745539249686453'
+}
 
 /*
  * For easier debugging in development mode, you can import the following file

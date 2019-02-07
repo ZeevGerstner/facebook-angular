@@ -1,0 +1,14 @@
+<app-post-create *ngIf="userIsAuthenticated"></app-post-create>
+<app-post-list
+  [posts]="posts"
+  [userIsAuthenticated]="userIsAuthenticated"
+  [userId]="userId"
+  (onDelete)="deletePost($event)"
+></app-post-list>
+<mat-paginator
+  *ngIf="posts.length > 0"
+  [length]="totalPosts"
+  [pageSize]="postsPerPage"
+  [pageSizeOptions]="pageSizeOptions"
+  (page)="onChangePage($event)"
+></mat-paginator>
