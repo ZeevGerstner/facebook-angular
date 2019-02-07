@@ -1,7 +1,7 @@
-<mat-card-title>
-  {{ post.creator.userName | titlecase }}
-  <br />
-  {{ post.createdAt | timeAgo }}
+<mat-card-title> 
+    <h2 [routerLink]="'profile/'+post.creator._id">{{ post.creator.userName | titlecase }}</h2>
+  <br>
+  {{post.createdAt | timeAgo}}
 </mat-card-title>
 <div class="post-image" *ngIf="post.imgPath">
   <img mat-card-image [src]="post.imgPath" alt="img" />

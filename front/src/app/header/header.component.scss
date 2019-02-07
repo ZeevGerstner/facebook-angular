@@ -19,3 +19,13 @@ a {
   height: 30px;
   padding-left: 10px;
 }
+.users-list{
+  position: absolute;
+  background-color: white;
+  color: black;
+  width: 150px;
+  border: 2px solid;
+  cursor: pointer;
+  padding-left: 10px;
+  z-index: 10;
+}

@@ -13,6 +13,7 @@ import { debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operato
 export class HeaderComponent implements OnInit, OnDestroy {
   userIsAuthenticated = false
   private authListenerSub: Subscription
+  usersSearch = []
   constructor(
     private authService: AuthService,
     private searchService: SearchService
@@ -34,7 +35,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
         distinctUntilChanged(),
         tap(t => console.log('term is ' + t)),
         switchMap(term => this.searchService.onSearchUsers(term))
-      ).subscribe(console.log)
+      ).subscribe(res => {
+        this.usersSearch = res.users
+        console.log(this.usersSearch)
+      })
   }
 
   onLogout() {

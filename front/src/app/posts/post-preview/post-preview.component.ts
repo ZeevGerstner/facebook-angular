@@ -18,4 +18,6 @@ export class PostPreviewComponent {
   @Input() userIsAuthenticated: boolean
   @Input() userId: string
   @Output() onDelete = new EventEmitter<string>()
+  
+
 }
