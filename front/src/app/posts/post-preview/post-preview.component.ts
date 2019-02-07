@@ -13,7 +13,7 @@ import { Post } from '../post.model'
   templateUrl: './post-preview.component.html',
   styleUrls: ['./post-preview.component.scss']
 })
-export class PostPreviewComponent implements OnInit, OnDestroy {
+export class PostPreviewComponent {
   @Input() post: Post
   @Input() userIsAuthenticated: boolean
   @Input() userId: string
