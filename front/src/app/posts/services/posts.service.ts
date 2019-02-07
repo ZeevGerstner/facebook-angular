@@ -16,7 +16,7 @@ export class PostsService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  getPosts(postPerPage: number, currPage: number) {
+  getPosts(postPerPage?: number, currPage?: number) {
     const queryParams = `?pageSize=${postPerPage}&page=${currPage}`
     this.http
       .get<{ message: string; posts: any; maxPosts: number }>(
@@ -62,7 +62,7 @@ export class PostsService {
 
     return this.http
       .post<{ message: string; post: Post }>(this.BASE_URL, postData)
-      .pipe(tap(() => this.getPosts))
+      .pipe(tap(() => this.getPosts()))
 
     // .subscribe(res => {
     //   this.router.navigate(['/'])

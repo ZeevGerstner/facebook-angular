@@ -77,8 +77,9 @@ export class PostCreateComponent implements OnInit, OnDestroy {
     if (this.form.invalid) return
     this.isLoading = true
     if (this.mode === 'create') {
-      this.postsService.addPosts(this.form.value.content, this.imgPath)
-      // .subscribe(res => (this.isLoading = false))
+      this.postsService
+        .addPosts(this.form.value.content, this.imgPath)
+        .subscribe(res => (this.isLoading = false))
     } else {
       this.postsService.updatedPost(
         this.postId,
@@ -86,6 +87,7 @@ export class PostCreateComponent implements OnInit, OnDestroy {
         this.imgPath
       )
     }
+    this.imgPath = ''
     this.form.reset()
   }
 
