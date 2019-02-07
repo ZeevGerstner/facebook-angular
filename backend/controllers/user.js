@@ -7,7 +7,7 @@ exports.createUser = async (req, res, next) => {
   const user = new User({
     email: req.body.email,
     userName: req.body.userName,
-    password: hash
+    password: hash,
   })
   try {
     const newUser = await user.save()
@@ -48,12 +48,59 @@ exports.userLogin = async (req, res, next) => {
   })
 }
 exports.getUsers = async (req, res, next) => {
-  const val = req.query.search
-  const users = await User.find({"userName":{$regex: val}})
-  .select('userName')
-  console.log(users)
-  res.status(200).json({
-    users
+  let val
+  if (req.query.search) {
+    val = req.query.search
+    const users = await User.find({ "userName": { $regex: val } })
+      .select('userName')
+    res.status(200).json({
+      users
+    })
+  } else {
+    val = req.query.userId
+    const user = await User.find({ _id: val })
+      .select('userName')
+    res.status(200).json({
+      user
+    })
+  }
+
+}
+
+exports.updateUser = async (req, res, next) => {
+  let { userIdToUpdate, userIdToIsert } = req.body
+  let action
+
+  User.findOne({ _id: userIdToUpdate }, function (err, user) {
+    if (!user) {
+      return res.status(400).send({ message: 'User not found' });
+    } else {
+      if (user.following.indexOf(userIdToIsert) === -1) {
+        // friendId is not already in user.friends; add it
+        action = '$push'
+      } else {
+        // friendId already exists
+        action = '$pull'
+      }
+      console.log('action', action)
+
+      const followUser = User.findByIdAndUpdate(
+        userIdToUpdate,
+        { [action]: { following: userIdToIsert } },
+        (err, res) => {
+          if (err) console.log(err);
+          console.log('following', res);
+        }
+      )
+      const followerUser = User.findByIdAndUpdate(
+        userIdToIsert,
+        { [action]: { followers: userIdToUpdate } },
+        (err, res) => {
+          if (err) console.log(err);
+          console.log('followers', res);
+        }
+      )
+    }
   })
-  
+
 }

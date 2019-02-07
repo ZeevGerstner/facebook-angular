@@ -103,6 +103,16 @@ export class AuthService {
     clearTimeout(this.tokenTimer)
   }
 
+  getUserById(userId){
+    return this.http.get<any>(`${this.BASE_URL}?userId=${userId}`)
+  }
+
+  updateUser(updateUser){
+    console.log(updateUser)
+    return this.http.put(`${this.BASE_URL}update`, updateUser)
+
+  }
+
   private setAuthTimer(duration: number) {
     this.tokenTimer = setTimeout(() => {
       this.logout()

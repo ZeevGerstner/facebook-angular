@@ -1,0 +1,7 @@
+<div *ngIf="user">
+    <h2>{{user.userName}}</h2>
+    <div *ngIf="userLoggin">
+        <button *ngIf="isMyProfile">Edit Profile</button>
+        <button *ngIf="!isMyProfile" (click)="followUser()">Follow</button>
+    </div>
+</div>

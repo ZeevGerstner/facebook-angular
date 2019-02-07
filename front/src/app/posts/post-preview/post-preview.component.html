@@ -1,4 +1,5 @@
-<mat-card-title> {{ post.creator.userName | titlecase }}
+<mat-card-title> 
+    <h2 [routerLink]="'profile/'+post.creator._id">{{ post.creator.userName | titlecase }}</h2>
   <br>
   {{post.createdAt | timeAgo}}
 </mat-card-title>

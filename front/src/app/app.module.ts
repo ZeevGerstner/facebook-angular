@@ -6,6 +6,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'
 
 import { AppComponent } from './app.component'
 import { HeaderComponent } from './header/header.component'
+import { ProfileComponent } from './profile/profile.component'
 import { AuthInterceptor } from './auth/auth-interceptor'
 import { ErrorInterceptor } from './error-interceptor'
 import { ErrorComponent } from './error/error.component'
@@ -17,6 +18,7 @@ import { PostsModule } from './posts/posts.module';
     AppComponent,
     HeaderComponent,
     ErrorComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,

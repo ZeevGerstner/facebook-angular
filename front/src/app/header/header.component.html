@@ -1,10 +1,11 @@
 <mat-toolbar color="primary">
-  <a routerLink="/"> <span>My messages</span> </a> <span class="spacer"></span>
+  <a routerLink="/"> <span>Wall</span> </a> <span class="spacer"></span>
   <ul>
     <li>
         <form [formGroup]="searchForm">
             <label>
               <input formControlName="searchValue" class="search" type="text" placeholder="search">
+              <div class="users-list" *ngFor="let user of usersSearch" [routerLink]="'profile/'+user._id">{{user.userName}}</div>
             </label>
           </form>
     </li>

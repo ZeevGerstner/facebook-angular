@@ -4,6 +4,7 @@ import { AuthGuard } from './auth/auth.guard'
 
 import { PostListComponent } from './posts/post-list/post-list.component'
 import { PostCreateComponent } from './posts/post-create/post-create.component'
+import { ProfileComponent } from './profile/profile.component'
 
 const routes: Routes = [
   {
@@ -19,6 +20,10 @@ const routes: Routes = [
     path: 'edit/:postId',
     component: PostCreateComponent,
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'profile/:userId',
+    component: ProfileComponent,
   },
   {
     path: 'auth',
