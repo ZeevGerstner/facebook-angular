@@ -3,12 +3,13 @@
   <br>
   {{post.createdAt | timeAgo}}
 </mat-card-title>
-<div class="post-image">
-    <img mat-card-image [src]="post.imgPath" alt="img" />
+<div class="post-image" *ngIf="post.imgPath">
+  <img mat-card-image [src]="post.imgPath" alt="img" />
 </div>
+<div>{{ post.content }}</div>
 <mat-action-row *ngIf="userIsAuthenticated && userId === post.creator._id">
-    <a mat-button color="primary" [routerLink]="['/edit/', post.id]">EDIT</a>
-    <button mat-button color="warn" (click)="onDelete(post.id)">
-        DELETE
-    </button>
+  <a mat-button color="primary" [routerLink]="['/edit/', post.id]">EDIT</a>
+  <button mat-button color="warn" (click)="onDelete.emit(post.id)">
+    DELETE
+  </button>
 </mat-action-row>

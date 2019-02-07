@@ -7,7 +7,6 @@ const postSchema = mongoose.Schema({
   },
   imgPath: {
     type: String,
-    required: true
   },
   creator: {
     type: mongoose.Schema.Types.ObjectId,

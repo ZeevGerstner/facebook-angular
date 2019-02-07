@@ -30,7 +30,7 @@
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": ["src/app/vendor/cloudinary.js"]
           },
           "configurations": {
             "production": {

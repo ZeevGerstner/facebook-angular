@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http'
 import { Router } from '@angular/router'
 
 import { Subject } from 'rxjs'
-import { map } from 'rxjs/operators'
+import { map, tap } from 'rxjs/operators'
 
 import { environment } from '../../../environments/environment'
 import { Post } from '../post.model'
@@ -26,14 +26,14 @@ export class PostsService {
         map(postData => ({
           posts: postData.posts.map(post => ({
             ...post,
-            id: post._id,
+            id: post._id
           })),
           maxPosts: postData.maxPosts
         }))
       )
       .subscribe(postsData => {
         this.posts = postsData.posts
-        console.log(this.posts);
+        console.log(this.posts)
 
         this.postsUpdated.next({
           posts: [...this.posts],
@@ -50,48 +50,43 @@ export class PostsService {
     return this.http.get<{
       _id: string
       content: string
-      imgPath: string,
+      imgPath: string
       creator: string
     }>(`${this.BASE_URL}${id}`)
   }
 
-  addPosts(content: string, img: File) {
+  addPosts(content: string, img?: string) {
     const postData = new FormData()
     postData.append('content', content)
-    postData.append('img', img)
+    if (img) postData.append('img', img)
 
-    this.http
-      .post<{ message: string; post: Post }>(
-        this.BASE_URL,
-        postData
-      )
-      .subscribe(res => {
-        this.router.navigate(['/'])
-      })
+    return this.http
+      .post<{ message: string; post: Post }>(this.BASE_URL, postData)
+      .pipe(tap(() => this.getPosts))
+
+    // .subscribe(res => {
+    //   this.router.navigate(['/'])
+    // })
   }
 
-  updatedPost(id: string, content: string, img: File | string) {
+  updatedPost(id: string, content: string, img?: string) {
     let postData: Post | FormData
     if (typeof img === 'object') {
       postData = new FormData()
       postData.append('id', id)
       postData.append('content', content)
-      postData.append('img', img)
-      console.log(img);
-
+      if (img) postData.append('img', img)
     } else {
       postData = {
         id,
         content,
-        imgPath: img,
-        creator: null,
+        imgPath: img ? img : '',
+        creator: null
       }
     }
-    this.http
-      .put(`${this.BASE_URL}${id}`, postData)
-      .subscribe(res => {
-        this.router.navigate(['/'])
-      })
+    this.http.put(`${this.BASE_URL}${id}`, postData).subscribe(res => {
+      this.router.navigate(['/'])
+    })
   }
 
   deletePost(postId: string) {

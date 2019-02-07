@@ -6,17 +6,20 @@ import { AngularMaterialModule } from '../modules/angular-material.module'
 import { CommonModule } from '@angular/common'
 import { RouterModule } from '@angular/router'
 import { TimeAgoPipe } from 'time-ago-pipe'
-import { postPreviewComponent } from './post-preview/post-preview.component'
-import {
-  CloudinaryModule,
-  CloudinaryConfiguration
-} from '@cloudinary/angular-5.x'
-import { Cloudinary } from 'cloudinary-core'
+import { PostPreviewComponent } from './post-preview/post-preview.component'
+import { MainFeedComponent } from './feed/main.feed.component'
+
+// import {
+//   CloudinaryModule,
+//   CloudinaryConfiguration
+// } from '@cloudinary/angular-5.x'
+// import { Cloudinary } from 'cloudinary-core'
 @NgModule({
   declarations: [
+    MainFeedComponent,
     PostCreateComponent,
     PostListComponent,
-    postPreviewComponent,
+    PostPreviewComponent,
     TimeAgoPipe
   ],
   imports: [
@@ -24,9 +27,9 @@ import { Cloudinary } from 'cloudinary-core'
     AngularMaterialModule,
     ReactiveFormsModule,
     RouterModule,
-    CloudinaryModule.forRoot({ Cloudinary }, {
-      cloud_name: 'dwjawpmxz'
-    } as CloudinaryConfiguration)
+    // CloudinaryModule.forRoot({ Cloudinary }, {
+    //   cloud_name: 'dwjawpmxz'
+    // } as CloudinaryConfiguration)
   ],
   exports: [ReactiveFormsModule]
 })
