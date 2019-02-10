@@ -19,10 +19,11 @@ export class PostsService {
   getPosts(postPerPage?: number, currPage?: number, userId?: string) {
     const queryParams = `?pageSize=${postPerPage}&page=${currPage}`
     console.log('asasasasasa',userId)
-    if (userId) this.BASE_URL += `feed/${userId}`
+    let feedUserId
+    (userId)? feedUserId = `feed/${userId}` : ''
     this.http
       .get<{ message: string; posts: Post[]; maxPosts: number }>(
-        `${this.BASE_URL}${queryParams}`
+        `${this.BASE_URL}${feedUserId}${queryParams}`
       )
       .pipe(
         map(postData => ({
@@ -88,7 +89,6 @@ export class PostsService {
   }
 
   likePost(postId:string, userId:string){
-    console.log(postId,userId)
     const likePostData = {postId, userId}
     return this.http.put(`${this.BASE_URL}like`, likePostData)
   }
