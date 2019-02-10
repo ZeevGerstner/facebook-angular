@@ -18,11 +18,12 @@ export class PostsService {
 
   getPosts(postPerPage?: number, currPage?: number, userId?: string) {
     const queryParams = `?pageSize=${postPerPage}&page=${currPage}`
-    console.log(userId)
-    if (userId) this.BASE_URL += `feed/${userId}`
+    console.log('asasasasasa',userId)
+    let feedUserId
+    (userId)? feedUserId = `feed/${userId}` : ''
     this.http
       .get<{ message: string; posts: Post[]; maxPosts: number }>(
-        `${this.BASE_URL}${queryParams}`
+        `${this.BASE_URL}${feedUserId}${queryParams}`
       )
       .pipe(
         map(postData => ({
@@ -85,5 +86,10 @@ export class PostsService {
 
   deletePost(postId: string) {
     return this.http.delete(`${this.BASE_URL}${postId}`)
+  }
+
+  likePost(postId:string, userId:string){
+    const likePostData = {postId, userId}
+    return this.http.put(`${this.BASE_URL}like`, likePostData)
   }
 }

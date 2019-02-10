@@ -3,12 +3,14 @@
   <span class="spacer"></span>
   <ul>
     <li>
-        <form [formGroup]="searchForm">
-            <label>
-              <input formControlName="searchValue" class="search" type="text" placeholder="search">
-              <div class="users-list" *ngFor="let user of usersSearch" [routerLink]="'profile/'+user._id">{{user.userName}}</div>
-            </label>
-          </form>
+      <form [formGroup]="searchForm">
+        <label>
+          <input formControlName="searchValue" class="search" type="text" placeholder="search">
+          <ul class="users-ul">
+            <li class="users-li" *ngFor="let user of usersSearch" [routerLink]="'profile/'+user._id">{{user.userName}}</li>
+          </ul>
+        </label>
+      </form>
     </li>
     <li *ngIf="!userIsAuthenticated">
       <a mat-button routerLink="auth/login" routerLinkActive="mat-accent">Login</a>

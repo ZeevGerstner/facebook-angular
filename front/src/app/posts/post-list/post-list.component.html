@@ -5,6 +5,7 @@
     [post]="post"
     [userId]="userId"
     (onDelete)="onDelete.emit(post.id)"
+    (likePost)="likePost.emit(post.id)"
   ></app-post-preview>
 </mat-card>
 

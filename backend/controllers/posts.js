@@ -126,3 +126,22 @@ exports.deletePost = async (req, res, next) => {
     })
   }
 }
+
+exports.likePost = async (req, res, next) => {
+  console.log(req.body)
+  const { postId, userId } = req.body
+  let action
+  const post = await Post.findById(postId)
+  if (post.userLikeIds.indexOf(userId) === -1) action = '$push'
+  else action = '$pull'
+  try {
+    await Post.findByIdAndUpdate(postId, {
+      [action]: { userLikeIds: userId }
+    })
+    res.status(200).json({
+      message: 'post added to userLikeIds list'
+    })
+  } catch (err) {
+    res.status(500).send({ message: 'post not found' })
+  }
+}

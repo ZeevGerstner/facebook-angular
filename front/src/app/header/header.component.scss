@@ -19,8 +19,12 @@ a {
   height: 30px;
   padding-left: 10px;
 }
-.users-list{
+.users-ul{
   position: absolute;
+  display: flex;
+  flex-direction: column;
+}
+.users-li{
   background-color: white;
   color: black;
   width: 150px;

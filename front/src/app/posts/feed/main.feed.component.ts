@@ -30,6 +30,7 @@ export class MainFeedComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isLoading = true
     this.userId = this.authService.getUserId()
+    
     if (this.userId) {
       this.postsService.getPosts(this.postsPerPage, this.currPage, this.userId)
     } else {
@@ -69,6 +70,11 @@ export class MainFeedComponent implements OnInit, OnDestroy {
       },
       err => (this.isLoading = false)
     )
+  }
+  onLikePost(postId:string){
+
+    this.postsService.likePost(postId,this.userId)
+    .subscribe(console.log)
   }
 
   ngOnDestroy() {
