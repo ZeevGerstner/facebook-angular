@@ -18,7 +18,7 @@ export class PostsService {
 
   getPosts(postPerPage?: number, currPage?: number, userId?: string) {
     const queryParams = `?pageSize=${postPerPage}&page=${currPage}`
-    console.log(userId)
+    console.log('asasasasasa',userId)
     if (userId) this.BASE_URL += `feed/${userId}`
     this.http
       .get<{ message: string; posts: Post[]; maxPosts: number }>(

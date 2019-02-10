@@ -5,8 +5,10 @@ exports.getPosts = async (req, res, next) => {
   const pageSize = +req.query.pageSize
   const page = +req.query.page
   const userId = req.params.userId
+console.log('in');
 
   const { following } = await User.findById(userId, 'following')
+  console.log(following)
   const postQuery = await Post.find({
     creator: {
       $in: following
