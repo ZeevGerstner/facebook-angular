@@ -4,51 +4,42 @@ import { AuthService } from '../auth/auth.service'
 import { AuthData } from '../auth/auth-data.model'
 
 @Component({
-    selector: 'app-profile',
-    templateUrl: './profile.component.html',
-    styleUrls: ['./profile.component.scss']
-  })
-
+  selector: 'app-profile',
+  templateUrl: './profile.component.html',
+  styleUrls: ['./profile.component.scss']
+})
 export class ProfileComponent implements OnInit {
-    user
-    myUserId: string
-    isMyProfile = false
-    userLoggin: boolean
-    userPosts
-    constructor(
-        public route: ActivatedRoute,
-        private authService: AuthService,
-    ){}
-    
-    ngOnInit() {
-        this.route.params.subscribe(param=>{
-            this.authService.getUserById(param.userId)
-            .subscribe(currUser => {
-                this.user = currUser.user[0]
-                this.checkProfile()
-                console.log(this.user)
-                this.getPosts()
-            })
-        })
-        
-    }
-    checkProfile(){
-        this.myUserId = localStorage.getItem('userId')
-        if(this.myUserId) this.userLoggin = true
-        else this.userLoggin = false
-        if(this.myUserId === this.user._id) this.isMyProfile = true
-        else this.isMyProfile = false
-    }
-    getPosts(){
+  user: { _id: string }
+  myUserId: string
+  userLoggin: boolean
+  isMyProfile = false
 
+  constructor(
+    public route: ActivatedRoute,
+    private authService: AuthService
+  ) { }
+
+  ngOnInit() {
+
+    this.route.params.subscribe(({userId}) => {
+      this.authService.getUserById(userId)
+        .subscribe(currUser => {
+        [this.user] = currUser.user
+        this.checkProfile()
+      })
+    })
+  }
+  checkProfile() {
+    this.myUserId = localStorage.getItem('userId')
+    if (this.myUserId) this.userLoggin = true
+    if (this.myUserId === this.user._id) this.isMyProfile = true
+  }
+  followUser() {
+    let updateUser = {
+      followedByUserId: this.myUserId,
+      followingOnUserId: this.user._id
     }
-    followUser(){
-        let updateUser = {
-            userIdToUpdate: this.myUserId,
-            userIdToIsert: this.user._id,
-        }
-        
-        this.authService.updateUser(updateUser)
-        .subscribe(console.log)
-    }
+
+    this.authService.updateUser(updateUser).subscribe(console.log)
+  }
 }

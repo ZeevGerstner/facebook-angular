@@ -29,8 +29,12 @@ export class MainFeedComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isLoading = true
-    this.postsService.getPosts(this.postsPerPage, this.currPage)
     this.userId = this.authService.getUserId()
+    if (this.userId) {
+      this.postsService.getPosts(this.postsPerPage, this.currPage, this.userId)
+    } else {
+      this.postsService.getPosts(this.postsPerPage, this.currPage)
+    }
     this.postSub = this.postsService
       .getPostsUpdatedListener()
       .subscribe((postData: { posts: Post[]; postCount: number }) => {

@@ -1,6 +1,6 @@
 const app = require('./app')
 const http = require('http')
-const debug = require('debug')('node-angular')
+const debug = require('debug')('node-angular');
 
 const onError = error => {
   if (error.syscall !== 'listen') {
@@ -28,7 +28,7 @@ const onListening = () => {
 }
 
 // set port
-const port = process.env.PORT || '3000'
+const port = process.env.PORT || '3000';
 app.set('port', port)
 
 //start server

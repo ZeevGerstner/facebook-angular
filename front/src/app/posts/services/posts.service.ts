@@ -16,10 +16,12 @@ export class PostsService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  getPosts(postPerPage?: number, currPage?: number) {
+  getPosts(postPerPage?: number, currPage?: number, userId?: string) {
     const queryParams = `?pageSize=${postPerPage}&page=${currPage}`
+    console.log(userId)
+    if (userId) this.BASE_URL += `feed/${userId}`
     this.http
-      .get<{ message: string; posts: any; maxPosts: number }>(
+      .get<{ message: string; posts: Post[]; maxPosts: number }>(
         `${this.BASE_URL}${queryParams}`
       )
       .pipe(
@@ -63,26 +65,18 @@ export class PostsService {
     return this.http
       .post<{ message: string; post: Post }>(this.BASE_URL, postData)
       .pipe(tap(() => this.getPosts()))
-
-    // .subscribe(res => {
-    //   this.router.navigate(['/'])
-    // })
   }
 
   updatedPost(id: string, content: string, img?: string) {
     let postData: Post | FormData
-    if (typeof img === 'object') {
-      postData = new FormData()
-      postData.append('id', id)
-      postData.append('content', content)
-      if (img) postData.append('img', img)
-    } else {
-      postData = {
-        id,
-        content,
-        imgPath: img ? img : '',
-        creator: null
-      }
+    postData = new FormData()
+    postData.append('id', id)
+    postData.append('content', content)
+    postData = {
+      id,
+      content,
+      imgPath: img ? img : '',
+      creator: null
     }
     this.http.put(`${this.BASE_URL}${id}`, postData).subscribe(res => {
       this.router.navigate(['/'])

@@ -8,6 +8,8 @@ const PostsController = require('../controllers/posts')
 
 router.get('', PostsController.getPosts)
 
+router.get('/feed/:userId', PostsController.getPosts)
+
 router.get('/:id', PostsController.getPost)
 
 router.post(

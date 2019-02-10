@@ -29,6 +29,8 @@
         Save Post
       </button>
       <button
+        *ngIf="form.valid"
+        class="btn-cancel"
         mat-flat-button
         color="warn"
         (click)="onCancelPost($event)"

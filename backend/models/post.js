@@ -6,7 +6,7 @@ const postSchema = mongoose.Schema({
     required: true
   },
   imgPath: {
-    type: String,
+    type: String
   },
   creator: {
     type: mongoose.Schema.Types.ObjectId,
@@ -15,6 +15,10 @@ const postSchema = mongoose.Schema({
   },
   createdAt: {
     type: Date
+  },
+  userLikeIds: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'User'
   }
 })
 

@@ -1,14 +1,22 @@
 const Post = require('../models/post')
+const User = require('../models/user')
 
 exports.getPosts = async (req, res, next) => {
   const pageSize = +req.query.pageSize
   const page = +req.query.page
-  const postQuery = Post.find()
+  const userId = req.params.userId
+
+  const { following } = await User.findById(userId, 'following')
+  const postQuery = await Post.find({
+    creator: {
+      $in: following
+    }
+  })
+    .sort({ createdAt: -1 })
+    .skip(pageSize * (page - 1))
+    .limit(pageSize)
     .populate('creator', 'userName')
 
-  if (pageSize && page) {
-    postQuery.skip(pageSize * (page - 1)).limit(pageSize)
-  }
   try {
     const [posts, maxPosts] = await Promise.all([postQuery, Post.count()])
     res.status(200).json({
@@ -25,12 +33,11 @@ exports.getPosts = async (req, res, next) => {
 
 exports.createPost = async (req, res, next) => {
   const url = req.body.img
-  console.log(`${req.body.img}`);
-  console.log(`${req.body.content}`);
   const post = new Post({
     content: req.body.content,
     imgPath: url ? url : '',
     creator: req.userData.userId,
+    userLikeIds: [],
     createdAt: Date.now()
   })
   try {
