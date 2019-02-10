@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core'
 import { Routes, RouterModule } from '@angular/router'
 import { AuthGuard } from './auth/auth.guard'
 
-// import { PostListComponent } from './posts/post-list/post-list.component'
 import { PostCreateComponent } from './posts/post-create/post-create.component'
 import { ProfileComponent } from './profile/profile.component'
 import { MainFeedComponent } from './posts/feed/main.feed.component'

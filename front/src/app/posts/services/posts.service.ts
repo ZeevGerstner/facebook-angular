@@ -16,10 +16,12 @@ export class PostsService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  getPosts(postPerPage?: number, currPage?: number) {
+  getPosts(postPerPage?: number, currPage?: number, userId?: string) {
     const queryParams = `?pageSize=${postPerPage}&page=${currPage}`
+    console.log(userId)
+    if (userId) this.BASE_URL += `feed/${userId}`
     this.http
-      .get<{ message: string; posts: any; maxPosts: number }>(
+      .get<{ message: string; posts: Post[]; maxPosts: number }>(
         `${this.BASE_URL}${queryParams}`
       )
       .pipe(
