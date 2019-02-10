@@ -92,4 +92,10 @@ export class PostsService {
   deletePost(postId: string) {
     return this.http.delete(`${this.BASE_URL}${postId}`)
   }
+
+  likePost(postId:string, userId:string){
+    console.log(postId,userId)
+    const likePostData = {postId, userId}
+    return this.http.put(`${this.BASE_URL}like`, likePostData)
+  }
 }

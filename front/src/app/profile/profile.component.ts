@@ -14,6 +14,7 @@ export class ProfileComponent implements OnInit {
     myUserId: string
     isMyProfile = false
     userLoggin: boolean
+    userPosts
     constructor(
         public route: ActivatedRoute,
         private authService: AuthService,
@@ -26,6 +27,7 @@ export class ProfileComponent implements OnInit {
                 this.user = currUser.user[0]
                 this.checkProfile()
                 console.log(this.user)
+                this.getPosts()
             })
         })
         
@@ -36,6 +38,9 @@ export class ProfileComponent implements OnInit {
         else this.userLoggin = false
         if(this.myUserId === this.user._id) this.isMyProfile = true
         else this.isMyProfile = false
+    }
+    getPosts(){
+
     }
     followUser(){
         let updateUser = {

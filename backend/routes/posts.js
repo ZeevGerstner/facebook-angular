@@ -16,6 +16,7 @@ router.post(
   extractFile,
   PostsController.createPost
 )
+router.put('/like',checkAuth, PostsController.likePost)
 
 router.put(
   '/:id',
@@ -23,6 +24,7 @@ router.put(
   extractFile,
   PostsController.updatePost
 )
+
 
 router.delete('/:id', checkAuth, PostsController.deletePost)
 

@@ -25,8 +25,8 @@ exports.getPosts = async (req, res, next) => {
 
 exports.createPost = async (req, res, next) => {
   const url = req.body.img
-  console.log(`${req.body.img}`); 
-  console.log(`${req.body.content}`); 
+  console.log(`${req.body.img}`);
+  console.log(`${req.body.content}`);
   const post = new Post({
     content: req.body.content,
     imgPath: url ? url : '',
@@ -118,4 +118,15 @@ exports.deletePost = async (req, res, next) => {
       message: 'Deleting posts failed'
     })
   }
+}
+
+exports.likePost = async (req, res, next) => {
+  console.log(req.body)
+  const { postId, userId } = req.body
+  let action
+  const post = await Post.findById(postId
+  )
+  console.log(post);
+
+  
 }

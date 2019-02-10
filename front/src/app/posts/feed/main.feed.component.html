@@ -4,6 +4,7 @@
   [userIsAuthenticated]="userIsAuthenticated"
   [userId]="userId"
   (onDelete)="deletePost($event)"
+  (likePost)="onLikePost($event)"
 ></app-post-list>
 <mat-paginator
   *ngIf="posts.length > 0"

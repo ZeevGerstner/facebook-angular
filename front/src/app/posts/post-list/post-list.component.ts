@@ -11,6 +11,7 @@ export class PostListComponent {
   @Input() userIsAuthenticated: boolean
   @Input() userId: string
   @Output() onDelete = new EventEmitter<string>()
+  @Output() likePost = new EventEmitter<string>()
 
   isLoading = false
 }

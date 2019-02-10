@@ -66,6 +66,11 @@ export class MainFeedComponent implements OnInit, OnDestroy {
       err => (this.isLoading = false)
     )
   }
+  onLikePost(postId:string){
+
+    this.postsService.likePost(postId,this.userId)
+    .subscribe(console.log)
+  }
 
   ngOnDestroy() {
     this.postSub.unsubscribe()
