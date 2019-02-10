@@ -37,6 +37,7 @@ exports.createPost = async (req, res, next) => {
     content: req.body.content,
     imgPath: url ? url : '',
     creator: req.userData.userId,
+    userLikeIds: [],
     createdAt: Date.now()
   })
   try {
