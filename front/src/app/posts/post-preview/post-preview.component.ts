@@ -19,6 +19,7 @@ export class PostPreviewComponent {
   @Input() userId: string
   @Output() onDelete = new EventEmitter<string>()
   @Output() likePost = new EventEmitter<string>()
+  @Output() editPost = new EventEmitter<void>()
 
 
 }

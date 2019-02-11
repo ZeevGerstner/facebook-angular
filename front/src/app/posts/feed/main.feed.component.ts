@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core'
-import { Subscription } from 'rxjs'
+import { Subscription, BehaviorSubject, Observable } from 'rxjs'
 import { PageEvent } from '@angular/material'
 
 import { PostsService } from '../services/posts.service'
 import { AuthService } from 'src/app/auth/auth.service'
 import { Post } from '../post.model'
+import { RawPostData } from '../models/raw-post-data.model';
 
 @Component({
   selector: 'app-main-feed',
@@ -20,30 +21,21 @@ export class MainFeedComponent implements OnInit, OnDestroy {
   userId: string
   userIsAuthenticated = false
   private authStatusSub: Subscription
-  private postSub: Subscription
+  $posts = this.postsService.postsUpdated;
 
   constructor(
     public postsService: PostsService,
     private authService: AuthService
-  ) {}
+  ) { }
 
   ngOnInit() {
-    this.isLoading = true
     this.userId = this.authService.getUserId()
-    
+
     if (this.userId) {
       this.postsService.getPosts(this.postsPerPage, this.currPage, this.userId)
     } else {
       this.postsService.getPosts(this.postsPerPage, this.currPage)
     }
-    this.postSub = this.postsService
-      .getPostsUpdatedListener()
-      .subscribe((postData: { posts: Post[]; postCount: number }) => {
-        this.isLoading = false
-        this.totalPosts = postData.postCount
-        this.posts = postData.posts
-      })
-
     this.userIsAuthenticated = this.authService.getIsAuth()
     this.authStatusSub = this.authService
       .getAuthStatusListener()
@@ -61,24 +53,37 @@ export class MainFeedComponent implements OnInit, OnDestroy {
   }
 
   deletePost(postId: string) {
-    console.log(postId)
 
     this.isLoading = true
     this.postsService.deletePost(postId).subscribe(
       res => {
-        this.postsService.getPosts(this.postsPerPage, this.currPage)
+        this.postsService.getPosts(this.postsPerPage, this.currPage, this.userId)
       },
       err => (this.isLoading = false)
     )
   }
-  onLikePost(postId:string){
+  onLikePost(postId: string) {
 
-    this.postsService.likePost(postId,this.userId)
-    .subscribe(console.log)
+    this.postsService.likePost(postId, this.userId)
+      .subscribe(console.log)
   }
 
   ngOnDestroy() {
-    this.postSub.unsubscribe()
     this.authStatusSub.unsubscribe()
+  }
+
+
+  createOrUpdatePost(newPostData: RawPostData) {
+    this.postsService.addPost(newPostData)
+      .subscribe(() => {
+        this.postsService.getPosts(this.postsPerPage, this.currPage, this.userId)
+      })
+  }
+
+  updatePost(post: Post) {
+    this.postsService.updatedPost(post._id, post.content, post.imgPath)
+      .subscribe(() => {
+        this.postsService.getPosts(this.postsPerPage, this.currPage, this.userId)
+      })
   }
 }

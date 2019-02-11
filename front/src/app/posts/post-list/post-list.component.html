@@ -1,12 +1,17 @@
 <mat-spinner *ngIf="isLoading"></mat-spinner>
-<mat-card *ngFor="let post of posts">
+<mat-card *ngFor="let post of posts;let i = index;">
   <app-post-preview
+    *ngIf="!isEditeds[i]"
     [userIsAuthenticated]="userIsAuthenticated"
     [post]="post"
     [userId]="userId"
     (onDelete)="onDelete.emit(post.id)"
     (likePost)="likePost.emit(post.id)"
+    (editPost)="isEditeds[i] = true"
   ></app-post-preview>
+  <app-post-create *ngIf="isEditeds[i]" [post]="post" (createPost)="onEditPost(post,$event)">
+
+  </app-post-create>
 </mat-card>
 
 <p class="info-txt mat-body-1" *ngIf="posts.length <= 0 && !isLoading">

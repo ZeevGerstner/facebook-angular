@@ -2,25 +2,26 @@ import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Router } from '@angular/router'
 
-import { Subject } from 'rxjs'
+import { Subject, BehaviorSubject } from 'rxjs'
 import { map, tap } from 'rxjs/operators'
 
 import { environment } from '../../../environments/environment'
 import { Post } from '../post.model'
+import { RawPostData } from '../models/raw-post-data.model';
 
 @Injectable({ providedIn: 'root' })
 export class PostsService {
   private BASE_URL: string = `${environment.apiUrl}/posts/`
   private posts: Post[] = []
-  private postsUpdated = new Subject<{ posts: Post[]; postCount: number }>()
+  postsUpdated = new BehaviorSubject<{ posts: Post[]; postCount: number }>({ posts: [], postCount: 0 })
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) { }
 
   getPosts(postPerPage?: number, currPage?: number, userId?: string) {
     const queryParams = `?pageSize=${postPerPage}&page=${currPage}`
-    console.log('asasasasasa',userId)
+    console.log('asasasasasa', userId)
     let feedUserId
-    (userId)? feedUserId = `feed/${userId}` : ''
+    (userId) ? feedUserId = `feed/${userId}` : ''
     this.http
       .get<{ message: string; posts: Post[]; maxPosts: number }>(
         `${this.BASE_URL}${feedUserId}${queryParams}`
@@ -58,14 +59,14 @@ export class PostsService {
     }>(`${this.BASE_URL}${id}`)
   }
 
-  addPosts(content: string, img?: string) {
+  addPost({ content, imgPath }: RawPostData) {
     const postData = new FormData()
     postData.append('content', content)
-    if (img) postData.append('img', img)
+    if (imgPath) postData.append('img', imgPath)
 
     return this.http
       .post<{ message: string; post: Post }>(this.BASE_URL, postData)
-      .pipe(tap(() => this.getPosts()))
+    // .pipe(tap(() => this.getPosts()))
   }
 
   updatedPost(id: string, content: string, img?: string) {
@@ -79,17 +80,15 @@ export class PostsService {
       imgPath: img ? img : '',
       creator: null
     }
-    this.http.put(`${this.BASE_URL}${id}`, postData).subscribe(res => {
-      this.router.navigate(['/'])
-    })
+    return this.http.put(`${this.BASE_URL}${id}`, postData)
   }
 
   deletePost(postId: string) {
     return this.http.delete(`${this.BASE_URL}${postId}`)
   }
 
-  likePost(postId:string, userId:string){
-    const likePostData = {postId, userId}
+  likePost(postId: string, userId: string) {
+    const likePostData = { postId, userId }
     return this.http.put(`${this.BASE_URL}like`, likePostData)
   }
 }

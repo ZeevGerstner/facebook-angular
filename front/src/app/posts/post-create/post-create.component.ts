@@ -1,20 +1,18 @@
 import {
   Component,
   OnInit,
-  OnDestroy,
   Output,
-  EventEmitter
+  EventEmitter,
+  Input
 } from '@angular/core'
-import { ActivatedRoute } from '@angular/router'
 import { FormGroup, FormControl, Validators } from '@angular/forms'
-import { Subscription } from 'rxjs'
 
 import { PostsService } from '../services/posts.service'
-import { AuthService } from 'src/app/auth/auth.service'
 import { Post } from '../post.model'
 
 import { environment } from '../../../environments/environment'
 import '../../vendor/cloudinary'
+import { RawPostData } from '../models/raw-post-data.model';
 declare const cloudinary: any
 
 @Component({
@@ -22,87 +20,45 @@ declare const cloudinary: any
   templateUrl: './post-create.component.html',
   styleUrls: ['./post-create.component.scss']
 })
-export class PostCreateComponent implements OnInit, OnDestroy {
-  @Output() onCreatePost = new EventEmitter<Post>()
+export class PostCreateComponent implements OnInit {
+  @Output() createPost = new EventEmitter<RawPostData>()
+  @Input() post: Post
 
-  postContent = ''
-  post: Post
   isLoading = false
-  form: FormGroup
+  form = new FormGroup({
+    content: new FormControl({
+      validators: [Validators.required]
+    })
+  })
   imgPreview: string
   myWidget: any
   imgPath: string
-  private mode = 'create'
-  private postId: string
-  private authStatusSub: Subscription
 
   constructor(
-    public route: ActivatedRoute,
     public postsService: PostsService,
-    private authService: AuthService
-  ) {}
+  ) { }
 
   ngOnInit() {
-    this.authStatusSub = this.authService
-      .getAuthStatusListener()
-      .subscribe(authStatus => (this.isLoading = false))
-    this.setForm()
-    this.route.paramMap.subscribe(paramMap => {
-      this.mode = 'edit'
-      if (paramMap.has('postId')) {
-        this.postId = paramMap.get('postId')
-        this.isLoading = true
-        this.postsService.getPost(this.postId).subscribe((postData: any) => {
-          this.isLoading = false
-          this.post = {
-            id: postData.id,
-            content: postData.content,
-            imgPath: postData.imgPath,
-            creator: postData.creator,
-            createdAt: postData.createdAt
-          }
-          this.imgPath = this.post.imgPath
-          this.form.setValue({
-            content: this.post.content,
-          })
-        })
-      } else {
-        this.mode = 'create'
-        this.postId = null
-      }
+    if (!this.post) return
+    this.imgPath = this.post.imgPath
+    this.form.setValue({
+      content: this.post.content,
     })
+
   }
 
   onSavePost() {
     if (this.form.invalid) return
-    this.isLoading = true
-    if (this.mode === 'create') {
-      this.postsService
-        .addPosts(this.form.value.content, this.imgPath)
-        .subscribe(res => (this.isLoading = false))
-    } else {
-      this.postsService.updatedPost(
-        this.postId,
-        this.form.value.content,
-        this.imgPath
-      )
-    }
-    this.imgPath = ''
-    this.form.reset()
+    this.createPost.emit({
+      content: this.form.value.content,
+      imgPath: this.imgPath
+    })
   }
 
   onCancelPost(ev) {
     ev.preventDefault()
     this.imgPath = ''
     this.form.reset()
-  }
-
-  setForm() {
-    this.form = new FormGroup({
-      content: new FormControl(null, {
-        validators: [Validators.required]
-      })
-    })
   }
 
   setUploadWidget() {
@@ -119,9 +75,5 @@ export class PostCreateComponent implements OnInit, OnDestroy {
       }
     )
     this.myWidget.open()
-  }
-
-  ngOnDestroy() {
-    this.authStatusSub.unsubscribe()
   }
 }

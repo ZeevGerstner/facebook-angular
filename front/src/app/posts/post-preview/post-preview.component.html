@@ -1,5 +1,5 @@
-<mat-card-title> 
-    <h2 [routerLink]="'profile/'+post.creator._id">{{ post.creator.userName | titlecase }}</h2>
+<mat-card-title>
+  <h2 [routerLink]="'profile/'+post.creator._id">{{ post.creator.userName | titlecase }}</h2>
   <br>
   {{post.createdAt | timeAgo}}
 </mat-card-title>
@@ -12,7 +12,9 @@
   <button (click)="likePost.emit(post.id)">Like</button>
 </div>
 <mat-action-row *ngIf="userIsAuthenticated && userId === post.creator._id">
-  <a mat-button color="primary" [routerLink]="['/edit/', post.id]">EDIT</a>
+  <a mat-button color="primary" (click)="editPost.emit()">
+    EDIT
+  </a>
   <button mat-button color="warn" (click)="onDelete.emit(post.id)">
     DELETE
   </button>
